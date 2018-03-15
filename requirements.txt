@@ -1,0 +1,5 @@
+sklearn
+seaborn==0.8.1
+pandas==0.22.0
+matplotlib==2.1.1
+jupyter
