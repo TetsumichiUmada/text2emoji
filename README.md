@@ -84,6 +84,14 @@ Based on the above table, the classifier tends to misclassify text messages with
 ### Future Work
 To be able to accurately analyze the text, we probably need to have more data to train the classifiers. At the same time, we can more experiment with engineering features. It might work if we use a Chi-squared test to find out more informative tokens. We might also be possible to build a deep learning for the sentimental classification.
 
+### Demo (outputs from the classification model)
+
+😂 Thank you for dinner!       
+😢 I don't like it          
+😱 My car skidded on the wet street        
+😢 My cat died       
+
+
 ### Reference
 + [DeepMoji](https://www.media.mit.edu/projects/deepmoji/overview/)
 + [DeepMoji GitHub](https://github.com/bfelbo/DeepMoji)
