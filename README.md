@@ -4,7 +4,7 @@ Sentiment analysis in computational linguistics is a general term for techniques
 
 Robust tools for sentiment analysis are often very desirable for companies, for example.  Imagine that a company has just launched a new product GizmoX.  Now the management wants to know how customers feel about it. Instead of calling or writing each person who bought GizmoX, if we could just have a program go on the web and find text on message boards that discuss GizmoX and automatically rate their attitude toward their recent purchase, valuable information could be obtained, practically for free. Because sentiment analysis is used so widely for this purpose, it is sometimes called [Opinion Mining](https://en.wikipedia.org/wiki/Sentiment_analysis).
 
-Of course, to be _really_ accurate at analyzing sentiment you almost have to have a human in the loop. There are many subtleties in texts that computer algorithms still have a hard time with---detecting sarcasm, for example. But, for many practical purposes you don't have to be 100% accurate in your analysis for it to be useful. A sentiment analyzer that gets it right 80% of the time can still be very valuable.
+Of course, to be _really_ accurate at analyzing sentiment you almost have to have a human in the loop. There are many subtleties in texts that computer algorithms still have a hard time with - detecting sarcasm, for example. But, for many practical purposes you don't have to be 100% accurate in your analysis for it to be useful. A sentiment analyzer that gets it right 80% of the time can still be very valuable.
 
 # Emoji Prediction
 
@@ -97,7 +97,7 @@ We analyze the classification results from the best performing (LinearSVC) model
 
 ![](images/confusion_matrix.png)
 
-It is obvious that the classifier has learned many significant patterns: the numbers along the diagonal are much higher that off the diagonal. That means true anger most often gets classified as anger, and so on.
+It is obvious that the classifier has learned many significant patterns: the numbers along the diagonal are much higher than off the diagonal. That means true anger most often gets classified as anger, and so on.
 
 On the other hand, the classifier tends to often misclassify text messages associated with guilt, shame, and anger. This is perhaps because it's hard to pinpoint specific words or sequences of words that characterize these sentiments. On the other hand, messages involving _joy_ are more likely to have words such as "good", "like", and "happy", and the classifier is able to  handle such sentiments much better.
 
