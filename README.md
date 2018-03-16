@@ -1,8 +1,20 @@
+# Sentiment Analysis
+
+Sentiment analysis in computational linguistics is a general term for techniques that quantify sentiment or mood in a text.  Can you tell from a text whether the writer is happy? Angry? Disappointed? Can you put their happiness on a 1-5 scale?
+
+Robust tools for sentiment analysis are often very desirable for companies, for example.  Imagine that a company has just launched a new product GizmoX.  Now the management wants to know how customers feel about it. Instead of calling or writing each person who bought GizmoX, if we could just have a program go on the web and find text on message boards that discuss GizmoX and automatically rate their attitude toward their recent purchase, valuable information could be obtained, practically for free. Because sentiment analysis is used so widely for this purpose, it is sometimes called [Opinion Mining](https://en.wikipedia.org/wiki/Sentiment_analysis).
+
+Of course, to be _really_ accurate at analyzing sentiment you almost have to have a human in the loop. There are many subtleties in texts that computer algorithms still have a hard time with---detecting sarcasm, for example. But, for many practical purposes you don't have to be 100% accurate in your analysis for it to be useful. A sentiment analyzer that gets it right 80% of the time can still be very valuable.
+
 # Emoji Prediction
 
-While texting to your friends, can you tell their emotion? Are they happy? Nowadays, people often send text messages to each other. However, it's difficult for people to understand and know a sender's emotions based on text messages, especially from not close friends. This project tries to build a classifier to predict sentiment associated with a text and represent it as an emoji.
+Emoji prediction is a fun variant of sentiment analysis. When texting your friends, can you tell their emotional state? Are they happy? Could you put an appropriate smiley on each text message you receive? If so, you probably understand their sentiment.
 
-## Quickstart
+In this project, we build what's called a **classifier** that learns to associate emojis with sentences. Although there are many technical details, the principle behind the classifier is very simple: we start with a large amount of sentences that contain emojis collected from Twitter messages.  Then we look at features from those sentences (words, word pairs, etc.) and train our classifier to associate certain features with their (known) smileys.  For example, if the classifier sees the word "happy" in many sentences that also has the smiley 😂, it will learn to classify such messages as 😂.  On the other hand, the word "happy" could be preceded by "not" in which case we shouldn't rely on just single words to be associated with certain smileys. For this reason, we also look at word sequences, and in this case, would learn that "not happy" is more strongly associated with sadness, outweighing the "happy" part.  The classifier learns to look at the totality of many word sequences found in a sentence and figures out what class of smiley would best characterize that sentence. Although the principle is simple, if we have millions of words of text with known smileys associated with the sentences, we can actually learn to do pretty well on this task.
+
+If you don't want to actually re-create the classifier, you can skip ahead to the Error Analysis section where you'll see how well it does in predicting 7 different smileys after being "trained" on some text.
+
+## Technical: Quickstart
 To use this project, it's required to install python3, jupyter notebook, and some python libraries.
 
 ### Install
@@ -44,28 +56,29 @@ In the txt file, each line is formatted like below:
 [ 1.  0.  0.  0.  0.  0.  0.] Passed the last exam.
 ```
 
-Since the first position of the vector is 1, the text is labeled as a joy.
+Since the first position of the vector is 1, the text is labeled as an instance of joy.
 
 For more information about the original data sets, please check [DeepEmoji/data](https://github.com/bfelbo/DeepMoji/tree/master/data) and text2emoji/data.
 
 
 ### Preprocess and Features
-How does computer understand a text message and analyze its sentiment? A text message is a series of words. To be able to process text messages, we need to convert text into numerical features.
+
+How does a computer understand a text message and analyze its sentiment? A text message is a series of words. To be able to process text messages, we need to convert text into numerical features.
 
 One of the methods to convert a text to numerical features is called an [n-grams](https://en.wikipedia.org/wiki/N-gram). An n-gram is a sequence of n words from a given text. A 2-gram(bigram) is a sequence of two words, for instance, "thank you" or "your project", and a 3-gram(trigram) is a three-word sequence of words like "please work on" or "turn your homework".
 
-For this project, first, we convert all the texts into lower cases. Then, we created n-grams with a range from 1 to 4 and counted each n-gram appears in the text.
+For this project, first, we convert all the texts into lower case. Then, we create n-grams with a range from 1 to 4 and count how many times each n-gram appears in the text.
 
 ### Models and Results
-Building a machine learning model involves mainly two steps. The first step is to train a model. Then, we evaluated the model. For this project, we picked four classifiers and train each classier to see which one works better for this project. To train and test the performance of each model, we split the dataset into a training set and test set, in the ratio of 80% and 20%. By separating the data, we can make sure that the model is well generalized and can perform well in the real world.
+Building a machine learning model involves mainly two steps. The first step is to train a model. After that, we evaluate the model on a separate data set---i.e. we don't evaluate performance on the same data we learned from. For this project, we use four classifiers and train each classier to see which one works better for this project. To train and test the performance of each model, we split the data set into a "training set" and a "test set", in the ratio of 80% and 20%. By separating the data, we can make sure that the model generalizes well and can perform well in the real world.
 
 We evaluate the performance of each model by calculating an accuracy score. The accuracy score is simply the proportion of classifications that were done correctly and is calculated by
 
 $$
-\text{Accuracy} = \frac{\text{number of correct classifiers}}{\text{total number of classifications made}}
+\text{Accuracy} = \frac{\text{number of correct classifications}}{\text{total number of classifications made}}
 $$
 
-For this project, we tried following classifiers and their accuracy scores are summarized in the table below.
+For this project, we tested following classifiers. Their accuracy scores are summarized in the table below.
 
 | Classifier                | Training Accuracy | Test Accuracy |
 | ------------------------- | ----------------- | ------------- |
@@ -74,21 +87,27 @@ For this project, we tried following classifiers and their accuracy scores are s
 | [RandomForestClassifier](http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html)    |         0.9911430 |     0.4304813 |
 | [DecisionTreeClassifier](http://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html)    |         0.9988302 |     0.4585561 |
 
-Based on the accuracy scores, it seems like SVC (support vector machine) classier is working fine, but its accuracy is low. The LinearSVC is working good although the model is overfitting (meaning that the training accuracy is higher and test accuracy is low). We can observe the same phenomena for the other classifiers. By choosing the classifier with the highest accuracy score on the test set, the LinearSVC seems to be good.
+Based on the accuracy scores, it seems like SVC works, but gives poor results. The LinearSVC classifier works quite well although we see some overfitting (meaning that the training accuracy is high and test accuracy is significantly lower). This means the model has difficulty generalizing to examples it hasn't seen.
 
-### Error Analysis
+We can observe the same phenomenon for the other classifiers. In the error analysis, we therefore focus on the LinearSVC classifier that performs the best.
 
-We analyzed the classification results from the LinearSVC model, using the confusion matrix. A confusion matrix is a table which summarizes the performance of a classification algorithm and shows. It allows to identify confusion between classes (such as one class that is commonly mislabeled as the other) The rows represent the true labels and the columns are predicted labels.
+# Error Analysis
+
+We analyze the classification results from the best performing (LinearSVC) model, using a confusion matrix. A confusion matrix is a table which summarizes the performance of a classification algorithm and reveals the type of misclassifications that occur. In other words, it shows the classifier's confusion between classes. The rows in the matrix represent the true labels and the columns are predicted labels.  A perfect classifier would have big numbers on the main diagonal and zeroes everywhere else.
 
 ![](images/confusion_matrix.png)
 
-Based on the above table, the classifier tends to misclassify text messages with guilt, shame, and anger. This happens probably because the text does not have any word which characterizes its sentiment. On the other hand, because joy message more likely to have words such as good, like, and happy, the classifier is able to well find out if the given message is happy or not.
+It is obvious that the classifier has learned many significant patterns: the numbers along the diagonal are much higher that off the diagonal. That means true anger most often gets classified as anger, and so on.
+
+On the other hand, the classifier tends to often misclassify text messages associated with guilt, shame, and anger. This is perhaps because it's hard to pinpoint specific words or sequences of words that characterize these sentiments. On the other hand, messages involving _joy_ are more likely to have words such as "good", "like", and "happy", and the classifier is able to  handle such sentiments much better.
 
 ### Future Work
-To be able to accurately analyze the text, we probably need to have more data to train the classifiers. At the same time, we can more experiment with engineering features. It might work if we use a Chi-squared test to find out more informative tokens. We might also be possible to build a deep learning for the sentimental classification.
+To improve on the current results, we probably, first and foremost, need access to more data for training. At the same time, adding more specific features to extract from the text may also help. For example, paying attention to usage of all caps, punctuation patterns, and similar things would probably improve the classifier.
 
-### Demo
-Using the classifier we built, we tried to predict an emoji that is associated with the test messages.
+A statistical analysis of useful features through a Chi-squared test to find out more informative tokens could also provide insight. As in many other tasks, moving from a linear classifier to a deep learning (neural network) model would probably also boost the performance.
+
+### Example/Demo
+Here are four example sentences and the emojis the classifier associates them with:
 
 😂 Thank you for dinner!       
 😢 I don't like it          
@@ -96,11 +115,11 @@ Using the classifier we built, we tried to predict an emoji that is associated w
 😢 My cat died       
 
 
-### Reference
+### References
 + [DeepMoji](https://www.media.mit.edu/projects/deepmoji/overview/)
 + [DeepMoji GitHub](https://github.com/bfelbo/DeepMoji)
 + [Multiclass and multilabel algorithms](http://scikit-learn.org/stable/modules/multiclass.html)
 + [sklearn.svm.SVC](http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html)
 + [sklearn.svm.LinearSVC](http://scikit-learn.org/stable/modules/generated/sklearn.svm.LinearSVC.html)
-+ [sklearn.ensemble.RandomForestClassifie](http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html)
++ [sklearn.ensemble.RandomForestClassifier](http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html)
 + [sklearn.tree.DecisionTreeClassifier](http://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html)
