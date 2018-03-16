@@ -52,12 +52,12 @@ For more information about the original data sets, please check [DeepEmoji/data]
 ### Preprocess and Features
 How does computer understand a text message and analyze its sentiment? A text message is a series of words. To be able to process text messages, we need to convert text into numerical features.
 
-One of the methods to convert a text to numerical features is called an [n-grams](https://en.wikipedia.org/wiki/N-gram). An n-gram is a sequence of n words from a given text. A 2-gram(bigram) is a sequence of two words, for instance, "thank you" or "your project", and a 3-gram(trigram) is a three word sequence of words like "please work on" or "turn your homework".
+One of the methods to convert a text to numerical features is called an [n-grams](https://en.wikipedia.org/wiki/N-gram). An n-gram is a sequence of n words from a given text. A 2-gram(bigram) is a sequence of two words, for instance, "thank you" or "your project", and a 3-gram(trigram) is a three-word sequence of words like "please work on" or "turn your homework".
 
-For this project, first we convert all the texts into lower cases. Then, we created n-grams with a range from 1 to 4 and counted each n-gram appears in the text.
+For this project, first, we convert all the texts into lower cases. Then, we created n-grams with a range from 1 to 4 and counted each n-gram appears in the text.
 
 ### Models and Results
-Building a machine learning model involves mainly two steps. The first step is to train a model. Then, we evaluated the model. For this project, we picked four classifiers and train each classier to see which one works better for this project. To train and test the performance of each model, we split the dataset into training set and test set, in the ratio of 80% and 20%. By separating the data, we can make sure that the model is well generalized and can perform well in the real world.
+Building a machine learning model involves mainly two steps. The first step is to train a model. Then, we evaluated the model. For this project, we picked four classifiers and train each classier to see which one works better for this project. To train and test the performance of each model, we split the dataset into a training set and test set, in the ratio of 80% and 20%. By separating the data, we can make sure that the model is well generalized and can perform well in the real world.
 
 We evaluate the performance of each model by calculating an accuracy score. The accuracy score is simply the proportion of classifications that were done correctly and is calculated by
 
