@@ -24,7 +24,7 @@ $ git clone https://github.com/TetsumichiUmada/text2emoji.git
 ```
 
 #### Run jupyter notebook
-To start jupyter notebook, you move to the directory with `cd/path_to/text2emoji`, then run
+To start jupyter notebook, you move to the directory with `cd path_to/text2emoji`, then run
 ```
 $ jupyter notebook
 ```
@@ -50,11 +50,14 @@ For more information about the original data sets, please check [DeepEmoji/data]
 
 
 ### Preprocess and Features
-To be able to build a model, we need to make features. From the text, we made [n-grams](https://en.wikipedia.org/wiki/N-gram) (a contiguous sequence of n words from a given text) with a range from 1 to 4. The feature also includes punctuations such as !, ?, or .. All texts are converted into lower cases.
+How does computer understand a text message and analyze its sentiment? A text message is a series of words. To be able to process text messages, we need to convert text into numerical features.
 
+One of the methods to convert a text to numerical features is called an [n-grams](https://en.wikipedia.org/wiki/N-gram). An n-gram is a sequence of n words from a given text. A 2-gram(bigram) is a sequence of two words, for instance, "thank you" or "your project", and a 3-gram(trigram) is a three word sequence of words like "please work on" or "turn your homework".
+
+For this project, first we convert all the texts into lower cases. Then, we created n-grams with a range from 1 to 4 and counted each n-gram appears in the text.
 
 ### Models and Results
-To choose the best model for this project, we tried four different classifiers. To train and test each model, the data was randomized. Then it was split into 80-20 ratio where 80% for the training and 20% for the testing. We kept 20% to make sure that we had enough amount of the data for testing.
+Building a machine learning model involves mainly two steps. The first step is to train a model. Then, we evaluated the model. For this project, we picked four classifiers and train each classier to see which one works better for this project. To train and test the performance of each model, we split the dataset into training set and test set, in the ratio of 80% and 20%. By separating the data, we can make sure that the model is well generalized and can perform well in the real world.
 
 We evaluate the performance of each model by calculating an accuracy score. The accuracy score is simply the proportion of classifications that were done correctly and is calculated by
 
@@ -71,11 +74,11 @@ For this project, we tried following classifiers and their accuracy scores are s
 | [RandomForestClassifier](http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html)    |         0.9911430 |     0.4304813 |
 | [DecisionTreeClassifier](http://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html)    |         0.9988302 |     0.4585561 |
 
-Based on the accuracy scores, it seems like SVC (support vector machine) classier is working fine, but the accuracy is low. The LinearSVC is working good although the model is overfitting (meaning that the training accuracy is higher and test accuracy is low). We can observe the same phenomena for the other classifiers. By choosing the classifier with the highest test accuracy score, the LinearSVC seems to be good.
+Based on the accuracy scores, it seems like SVC (support vector machine) classier is working fine, but its accuracy is low. The LinearSVC is working good although the model is overfitting (meaning that the training accuracy is higher and test accuracy is low). We can observe the same phenomena for the other classifiers. By choosing the classifier with the highest accuracy score on the test set, the LinearSVC seems to be good.
 
 ### Error Analysis
 
-We analyzed the classification results from the LinearSVC model, using the confusion matrix. The rows represent the true labels and the columns are predicted labels.
+We analyzed the classification results from the LinearSVC model, using the confusion matrix. A confusion matrix is a table which summarizes the performance of a classification algorithm and shows. It allows to identify confusion between classes (such as one class that is commonly mislabeled as the other) The rows represent the true labels and the columns are predicted labels.
 
 ![](images/confusion_matrix.png)
 
@@ -84,7 +87,8 @@ Based on the above table, the classifier tends to misclassify text messages with
 ### Future Work
 To be able to accurately analyze the text, we probably need to have more data to train the classifiers. At the same time, we can more experiment with engineering features. It might work if we use a Chi-squared test to find out more informative tokens. We might also be possible to build a deep learning for the sentimental classification.
 
-### Demo (outputs from the classification model)
+### Demo
+Using the classifier we built, we tried to predict an emoji that is associated with the test messages.
 
 😂 Thank you for dinner!       
 😢 I don't like it          
